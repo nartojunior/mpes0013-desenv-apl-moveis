@@ -7,7 +7,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'iJammer',
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -18,9 +18,9 @@ class MyApp extends StatelessWidget {
         // or simply save your changes to "hot reload" in a Flutter IDE).
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.green,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MyHomePage(title: 'iJammer'),
     );
   }
 }
@@ -89,23 +89,71 @@ class _MyHomePageState extends State<MyHomePage> {
           // center the children vertically; the main axis here is the vertical
           // axis because Columns are vertical (the cross axis would be
           // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            Text(
+            Container( // to do container
+              margin: const EdgeInsets.all(10.0),
+              color: Colors.green[100],
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height/2,
+              child:  Column( //scroll columns
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget>[
+                  Container(
+
+                    margin: const EdgeInsets.all(10.0),
+                    alignment: Alignment.bottomCenter,
+                    color: Colors.white,//[100],
+                    width: MediaQuery.of(context).size.width,
+                    height: 70,
+                    child: // botao de adicionar task
+
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: <Widget>[
+                      FloatingActionButton(
+
+                        onPressed: _incrementCounter,
+                        tooltip: 'AddTask',
+                        child: Icon(Icons.add),
+                      ), // This trailing comma makes auto-formatting nicer for build methods.
+
+                    ]
+
+
+                    )
+                    )
+                  ]
+
+
+              )
+            ),
+            Container( // o pomodoro precisa rodar dentro desse container
+              margin: const EdgeInsets.all(10.0),
+              color: Colors.green[100],
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height/3,
+            ),
+
+
+            /*Text(
               'You have pushed the button this many times:',
             ),
             Text(
               '$_counter',
               style: Theme.of(context).textTheme.display1,
-            ),
-          ],
+            ),*/
+
+
+            ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
+      /*floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,
         tooltip: 'Increment',
         child: Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
+    */
     );
   }
 }
