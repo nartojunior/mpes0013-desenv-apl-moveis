@@ -106,19 +106,25 @@ class _MyHomePageState extends State<MyHomePage> {
                     color: Colors.white,//[100],
                     width: MediaQuery.of(context).size.width,
                     height: 70,
-                    child: // botao de adicionar task
+                      child: Row(children: <Widget>[
+                        Expanded(
+                          child: TextField(
 
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: <Widget>[
-                      FloatingActionButton(
+                            //controller: _todoController,
+                            decoration: InputDecoration(
+                              labelText: "Nova Tarefa",
+                              labelStyle: TextStyle(color: Colors.blueAccent),
+                            ),
 
-                        onPressed: _incrementCounter,
-                        tooltip: 'AddTask',
-                        child: Icon(Icons.add),
-                      ), // This trailing comma makes auto-formatting nicer for build methods.
-
-                    ]
+                          ),
+                        ),
+                        RaisedButton(
+                          color: Colors.blueAccent,
+                          child: Text("ADD"),
+                          textColor: Colors.white70,
+                          //onPressed: addTodo,
+                        )
+                      ],
 
 
                     )
@@ -133,7 +139,7 @@ class _MyHomePageState extends State<MyHomePage> {
               color: Colors.green[100],
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height/3,
-            ),
+              ),
 
 
             /*Text(
