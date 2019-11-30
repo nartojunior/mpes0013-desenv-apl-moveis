@@ -1,165 +1,262 @@
+import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
 
-void main() => runApp(MyApp());
-
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'iJammer',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.green,
-      ),
-      home: MyHomePage(title: 'iJammer'),
-    );
-  }
+void main() {
+  runApp(MaterialApp(title: "iJammer", home: Home()));
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
-
+class Home extends StatefulWidget {
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _HomeState createState() => _HomeState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+class _HomeState extends State<Home> {
+  List _todoList = [];
+  Map<String, dynamic> _lastRemoved = Map();
+  int _lastRemovedPos;
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
+  TextEditingController _todoController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _readData().then((data) {
+      setState(() {
+        _todoList = json.decode(data);
+      });
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
-    return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            Container( // to do container
-              margin: const EdgeInsets.all(10.0),
-              color: Colors.green[100],
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height/2,
-              child:  Column( //scroll columns
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: <Widget>[
-                  Container(
+    Scaffold screen = Scaffold(
+        appBar: AppBar(
+          title: Text("iJammer"),
+          backgroundColor: Colors.lightGreen[700],
+          centerTitle: true,
+        ),
+        body:
+            //start of app body
 
-                    margin: const EdgeInsets.all(10.0),
-                    alignment: Alignment.bottomCenter,
-                    color: Colors.white,//[100],
-                    width: MediaQuery.of(context).size.width,
-                    height: 70,
-                      child: Row(children: <Widget>[
-                        Expanded(
-                          child: TextField(
+            Center(
+                // Center is a layout widget. It takes a single child and positions it
+                // in the middle of the parent.
+                child: Column(
+                    // Column is also a layout widget. It takes a list of children and
+                    // arranges them vertically. By default, it sizes itself to fit its
+                    // children horizontally, and tries to be as tall as its parent.
+                    //
+                    // Invoke "debug painting" (press "p" in the console, choose the
+                    // "Toggle Debug Paint" action from the Flutter Inspector in Android
+                    // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
+                    // to see the wireframe for each widget.
+                    //
+                    // Column has various properties to control how it sizes itself and
+                    // how it positions its children. Here we use mainAxisAlignment to
+                    // center the children vertically; the main axis here is the vertical
+                    // axis because Columns are vertical (the cross axis would be
+                    // horizontal).
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+              Container(
+                // to do container
+                margin: const EdgeInsets.all(10.0),
+                color: Colors.green[100],
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height / 2,
+                child: Column(
+                    //body of to do app
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      // start of body of to do app
 
-                            //controller: _todoController,
-                            decoration: InputDecoration(
-                              labelText: "Nova Tarefa",
-                              labelStyle: TextStyle(color: Colors.blueAccent),
+                      Container(
+                        margin: const EdgeInsets.all(10.0),
+                        alignment: Alignment.topCenter,
+                        color: Colors.white,
+                        //[100],
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.height/2 - 30,
+                        child:
+                            //* MAIN APP
+                            Column(
+                          children: <Widget>[
+                            Container(
+                              padding: EdgeInsets.all(10),
+                              //EdgeInsets.fromLTRB(17.0, 1.0, 7.0, 1.0),
+                              child: Row(
+                                children: <Widget>[
+                                  Expanded(
+                                    child: TextField(
+                                      controller: _todoController,
+                                      decoration: InputDecoration(
+                                        hintText: "Adicionar tarefa",
+                                        labelStyle: TextStyle(
+                                            color: Colors.lightGreen[700]),
+                                      ),
+                                    ),
+                                  ),
+                                  RaisedButton(
+                                    color: Colors.lightGreen[700],
+                                    child: Text("+"),
+                                    textColor: Colors.white70,
+                                    onPressed: addTodo,
+                                  )
+                                ],
+                              ),
                             ),
-
-                          ),
+                            Expanded(
+                              child: RefreshIndicator(
+                                onRefresh: _refresh,
+                                child: ListView.builder(
+                                    padding: EdgeInsets.only(top: 10.0),
+                                    itemCount: _todoList.length,
+                                    itemBuilder: buildItem),
+                              ),
+                            ),
+                          ],
                         ),
-                        RaisedButton(
-                          color: Colors.blueAccent,
-                          child: Text("ADD"),
-                          textColor: Colors.white70,
-                          //onPressed: addTodo,
-                        )
-                      ],
+                        //   MAIN APP */
+                      ),
 
+                      // container branco
+                     /*
+                      Container(
+                        margin: const EdgeInsets.all(10.0),
+                        alignment: Alignment.bottomCenter,
+                        color: Colors.white,
+                        //[100],
+                        width: MediaQuery.of(context).size.width,
+                        height: 70,
+                        //child
+                      )
+*/
 
-                    )
-                    )
-                  ]
+                      // end of body of to do app
+                    ]),
+              ), //container do todoapp
 
-
-              )
-            ),
-            Container( // o pomodoro precisa rodar dentro desse container
-              margin: const EdgeInsets.all(10.0),
-              color: Colors.green[100],
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height/3,
+              Container(
+                // o pomodoro precisa rodar dentro desse container
+                margin: const EdgeInsets.all(10.0),
+                color: Colors.green[100],
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height / 3,
               ),
 
+              // end of app body
+            ])));
 
-            /*Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.display1,
-            ),*/
+    return screen;
+  }
 
-
-            ],
+  Widget buildItem(context, index) {
+    return Dismissible(
+      key: Key(DateTime.now().millisecondsSinceEpoch.toString()),
+      background: Container(
+        color: Colors.red,
+        child: Align(
+          alignment: Alignment(-0.9, 0.0),
+          child: Icon(
+            Icons.delete,
+            color: Colors.white,
+          ),
         ),
       ),
-      /*floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
-    */
+      direction: DismissDirection.startToEnd,
+      child: CheckboxListTile(
+        title: Text(_todoList[index]["title"]),
+        value: _todoList[index]["ok"],
+        secondary: CircleAvatar(
+          child:
+              Icon(_todoList[index]["ok"] ? Icons.check : Icons.brightness_1),
+        ),
+        onChanged: (c) {
+          checkTodo(index, c);
+        },
+      ),
+      onDismissed: (direction) {
+        setState(() {
+          _lastRemoved = Map.from(_todoList[index]);
+          _lastRemovedPos = index;
+          _todoList.removeAt(index);
+          _saveData();
+
+          final snack = SnackBar(
+            content: Text("Tarefa ${_lastRemoved["title"]} removida."),
+            action: SnackBarAction(
+                label: "Desfazer",
+                onPressed: () {
+                  setState(() {
+                    _todoList.insert(_lastRemovedPos, _lastRemoved);
+                    _saveData();
+                  });
+                }),
+            duration: Duration(seconds: 2),
+          );
+          Scaffold.of(context).removeCurrentSnackBar();
+          Scaffold.of(context).showSnackBar(snack);
+        });
+      },
     );
+  }
+
+  Future<File> _getFile() async {
+    final directory = await getApplicationDocumentsDirectory();
+    return File("${directory.path}/data.json");
+  }
+
+  Future<File> _saveData() async {
+    String data = json.encode(_todoList);
+    final file = await _getFile();
+    return file.writeAsString(data);
+  }
+
+  Future<String> _readData() async {
+    try {
+      final file = await _getFile();
+      return file.readAsString();
+    } catch (e) {
+      return null;
+    }
+  }
+
+  void addTodo() {
+    setState(() {
+      Map<String, dynamic> newTodo = Map();
+      newTodo["title"] = _todoController.text;
+      _todoController.text = "";
+      newTodo["ok"] = false;
+      _todoList.add(newTodo);
+      _saveData();
+    });
+  }
+
+  void checkTodo(index, c) {
+    setState(() {
+      _todoList[index]["ok"] = c;
+      _saveData();
+    });
+  }
+
+  Future<Null> _refresh() async {
+    await Future.delayed(Duration(seconds: 1));
+
+    setState(() {
+      _todoList.sort((a, b) {
+        if (a["ok"] && !b["ok"])
+          return 1;
+        else if (!a["ok"] && b["ok"])
+          return -1;
+        else
+          return 0;
+      });
+
+      _saveData();
+    });
+
+    return null;
   }
 }
