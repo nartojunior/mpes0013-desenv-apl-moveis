@@ -245,6 +245,9 @@ class _HomeState extends State<Home> {
       ),
       direction: DismissDirection.startToEnd,
       child: CheckboxListTile(
+        checkColor: Colors.white,
+        activeColor: Colors.white,
+
         title: Text(_todoList[index]["title"],
 
           style: new TextStyle(
@@ -261,9 +264,12 @@ class _HomeState extends State<Home> {
           child:
               Icon(_todoList[index]["ok"] ? Icons.check : Icons.brightness_1),
         ),
+
         onChanged: (c) {
+
           checkTodo(index, c);
         },
+
       ),
       onDismissed: (direction) {
         setState(() {
