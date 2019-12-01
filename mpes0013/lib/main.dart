@@ -19,6 +19,7 @@ class _HomeState extends State<Home> {
   int _lastRemovedPos;
 
   int pomoTime = 1;
+
   // 1 = Pomodoro
   // 2 = Short Break;
   // 3 = Lng Break;
@@ -32,21 +33,23 @@ class _HomeState extends State<Home> {
   TextEditingController _todoController = TextEditingController();
 
   void startTimer() {
-  CountdownTimer countDownTimer = new CountdownTimer(
-    new Duration(seconds: _start),
-    new Duration(seconds: 1),
-  );
+    CountdownTimer countDownTimer = new CountdownTimer(
+      new Duration(seconds: _start),
+      new Duration(seconds: 1),
+    );
 
-  var sub = countDownTimer.listen(null);
-  sub.onData((duration) {
-    setState(() { _current = _start - duration.elapsed.inSeconds; });
-  });
+    var sub = countDownTimer.listen(null);
+    sub.onData((duration) {
+      setState(() {
+        _current = _start - duration.elapsed.inSeconds;
+      });
+    });
 
-  sub.onDone(() {
-    print("Done");
-    sub.cancel();
-  });
-}
+    sub.onDone(() {
+      print("Done");
+      sub.cancel();
+    });
+  }
 
   @override
   void initState() {
@@ -107,7 +110,7 @@ class _HomeState extends State<Home> {
                         color: Colors.white,
                         //[100],
                         width: MediaQuery.of(context).size.width,
-                        height: MediaQuery.of(context).size.height/2 - 30,
+                        height: MediaQuery.of(context).size.height / 2 - 30,
                         child:
                             //* MAIN APP
                             Column(
@@ -151,7 +154,7 @@ class _HomeState extends State<Home> {
                       ),
 
                       // container branco
-                     /*
+                      /*
                       Container(
                         margin: const EdgeInsets.all(10.0),
                         alignment: Alignment.bottomCenter,
@@ -168,38 +171,42 @@ class _HomeState extends State<Home> {
               ), //container do todoapp
 
               Container(
-                // o pomodoro precisa rodar dentro desse container
-                margin: const EdgeInsets.all(10.0),
-                color: Colors.green[100],
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height / 3,
-                child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-
-                          children: <Widget>[
-                            RaisedButton(
-                              onPressed: () {
-                                startTimer();
-                              },
-                              child: Text("start"),
-                            ),
-                             RaisedButton(
-                              onPressed: () {
-                                startTimer();
-                              },
-                              child: Text("start"),
-                            ),
-                             RaisedButton(
-                              onPressed: () {
-                                startTimer();
-                              },
-                              child: Text("start"),
-                            ),
-                            
-                            Text("$_current")
-                          ],
-                        ),
-                ),
+                  // o pomodoro precisa rodar dentro desse container
+                  margin: const EdgeInsets.all(10.0),
+                  color: Colors.green[100],
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height / 3,
+                  child: Column(
+                    children: <Widget>[
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          RaisedButton(
+                            onPressed: () {
+                              startTimer();
+                            },
+                            child: Text("start"),
+                          ),
+                          RaisedButton(
+                            onPressed: () {
+                              startTimer();
+                            },
+                            child: Text("start"),
+                          ),
+                          RaisedButton(
+                            onPressed: () {
+                              startTimer();
+                            },
+                            child: Text("start"),
+                          ),
+                        ],
+                      ),
+                      Text(
+                        "$_current",
+                      ),
+                      Icon(Icons.access_time, color: Colors.white, size: 200),
+                    ],
+                  )),
 
               // end of app body
             ])));
