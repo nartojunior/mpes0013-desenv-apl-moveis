@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:quiver/async.dart';
 
 void main() {
   runApp(MaterialApp(title: "iJammer", home: Home()));
@@ -17,7 +18,35 @@ class _HomeState extends State<Home> {
   Map<String, dynamic> _lastRemoved = Map();
   int _lastRemovedPos;
 
+  int pomoTime = 1;
+  // 1 = Pomodoro
+  // 2 = Short Break;
+  // 3 = Lng Break;
+
+  //int _countPomodoro = 0;
+  //int _countBreak = 0;
+
+  int _start = 10;
+  int _current = 10;
+
   TextEditingController _todoController = TextEditingController();
+
+  void startTimer() {
+  CountdownTimer countDownTimer = new CountdownTimer(
+    new Duration(seconds: _start),
+    new Duration(seconds: 1),
+  );
+
+  var sub = countDownTimer.listen(null);
+  sub.onData((duration) {
+    setState(() { _current = _start - duration.elapsed.inSeconds; });
+  });
+
+  sub.onDone(() {
+    print("Done");
+    sub.cancel();
+  });
+}
 
   @override
   void initState() {
@@ -144,7 +173,33 @@ class _HomeState extends State<Home> {
                 color: Colors.green[100],
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.height / 3,
-              ),
+                child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+
+                          children: <Widget>[
+                            RaisedButton(
+                              onPressed: () {
+                                startTimer();
+                              },
+                              child: Text("start"),
+                            ),
+                             RaisedButton(
+                              onPressed: () {
+                                startTimer();
+                              },
+                              child: Text("start"),
+                            ),
+                             RaisedButton(
+                              onPressed: () {
+                                startTimer();
+                              },
+                              child: Text("start"),
+                            ),
+                            
+                            Text("$_current")
+                          ],
+                        ),
+                ),
 
               // end of app body
             ])));
