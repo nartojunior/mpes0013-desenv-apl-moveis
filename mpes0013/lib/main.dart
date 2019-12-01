@@ -31,42 +31,34 @@ class _HomeState extends State<Home> {
   int _start = 10;
   int _current = 10;
   CountdownTimer countDownTimer;
+  Stopwatch stopwatch = new Stopwatch();
 
   TextEditingController _todoController = TextEditingController();
 
-<<<<<<< HEAD
-  void startTimer(int typeTimer) {
+  void startTimer(int pomotime) {
 
-    if (typeTimer == 1 )
+    if (countDownTimer != null && countDownTimer.isRunning)
     {
-        _start = 25 * 60;
-        _current = _start;
+      countDownTimer.cancel();
+      stopwatch = new Stopwatch();
+
+      if (pomotime == 1)
+      {
+        _start = _current = 25 * 60;
+      }
     }
 
-    // int minute = (duration.inMinutes.abs() % 60);
-    // int second = (duration.inSeconds.abs() % 60);
-    
     countDownTimer = new CountdownTimer(
-=======
-  void startTimer() {
-    CountdownTimer countDownTimer = new CountdownTimer(
->>>>>>> c52b5126ed6c7ca3442cdea9788f248f6946f21b
       new Duration(seconds: _start),
       new Duration(seconds: 1),
+      stopwatch: stopwatch
     );
 
     var sub = countDownTimer.listen(null);
-<<<<<<< HEAD
-
-
-    sub.onData((duration) {
-      setState(() { _current = _start - duration.elapsed.inSeconds; });
-=======
     sub.onData((duration) {
       setState(() {
         _current = _start - duration.elapsed.inSeconds;
       });
->>>>>>> c52b5126ed6c7ca3442cdea9788f248f6946f21b
     });
 
     sub.onDone(() {
@@ -195,40 +187,6 @@ class _HomeState extends State<Home> {
               ), //container do todoapp
 
               Container(
-<<<<<<< HEAD
-                // o pomodoro precisa rodar dentro desse container
-                margin: const EdgeInsets.all(10.0),
-                color: Colors.green[100],
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height / 3,
-                child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-
-                          children: <Widget>[
-                            RaisedButton(
-                              onPressed: () {
-                                startTimer(1);
-                              },
-                              child: Text("start"),
-                            ),
-                             RaisedButton(
-                              onPressed: () {
-                                startTimer(2);
-                              },
-                              child: Text("start"),
-                            ),
-                             RaisedButton(
-                              onPressed: () {
-                                startTimer(3);
-                              },
-                              child: Text("start"),
-                            ),
-                            
-                            Text("$_current")
-                          ],
-                        ),
-                ),
-=======
                   // o pomodoro precisa rodar dentro desse container
                   margin: const EdgeInsets.all(10.0),
                   color: Colors.green[100],
@@ -241,21 +199,21 @@ class _HomeState extends State<Home> {
                         children: <Widget>[
                           RaisedButton(
                             onPressed: () {
-                              startTimer();
+                              startTimer(1);
                             },
-                            child: Text("start"),
+                            child: Text("Pomodoro"),
                           ),
                           RaisedButton(
                             onPressed: () {
-                              startTimer();
+                              startTimer(2);
                             },
-                            child: Text("start"),
+                            child: Text("Short break"),
                           ),
                           RaisedButton(
                             onPressed: () {
-                              startTimer();
+                              startTimer(3);
                             },
-                            child: Text("start"),
+                            child: Text("Long break"),
                           ),
                         ],
                       ),
@@ -265,7 +223,6 @@ class _HomeState extends State<Home> {
                       Icon(Icons.access_time, color: Colors.white, size: 200),
                     ],
                   )),
->>>>>>> c52b5126ed6c7ca3442cdea9788f248f6946f21b
 
               // end of app body
             ])));
