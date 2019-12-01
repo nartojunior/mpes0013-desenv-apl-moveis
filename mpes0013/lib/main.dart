@@ -28,24 +28,44 @@ class _HomeState extends State<Home> {
   //int _countPomodoro = 0;
   //int _countBreak = 0;
 
-  int _start = 10;
-  int _current = 10;
+  int _start = 0;
+  int _current = 0;
   CountdownTimer countDownTimer;
   Stopwatch stopwatch = new Stopwatch();
 
   TextEditingController _todoController = TextEditingController();
+  
+  String getCurrentTime()
+  {
+    int minutes = _current ~/ 60;
+    int seconds = _current % 60;
+
+    return seconds > 9 ? minutes.toString() + ":" + seconds.toString() : minutes.toString() + ":0" + seconds.toString() ;
+  }
 
   void startTimer(int pomotime) {
-
+    
+    setState(() {
+      if (pomotime == 1)
+      {
+        _start = 25 * 60;
+        _current = 25 * 60;
+      }
+      else if (pomotime == 2)
+      {
+        _start = 5 * 60;
+        _current = 5 * 60;
+      } else if (pomotime == 3)
+      {
+        _start = 15 * 60;
+        _current = 15 * 60;
+      }
+    });
+  
     if (countDownTimer != null && countDownTimer.isRunning)
     {
       countDownTimer.cancel();
       stopwatch = new Stopwatch();
-
-      if (pomotime == 1)
-      {
-        _start = _current = 25 * 60;
-      }
     }
 
     countDownTimer = new CountdownTimer(
@@ -218,8 +238,9 @@ class _HomeState extends State<Home> {
                         ],
                       ),
                       Text(
-                        "$_current",
+                        getCurrentTime(),
                       ),
+                     
                       Icon(Icons.access_time, color: Colors.white, size: 200),
                     ],
                   )),
