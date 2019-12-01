@@ -229,7 +229,17 @@ class _HomeState extends State<Home> {
       ),
       direction: DismissDirection.startToEnd,
       child: CheckboxListTile(
-        title: Text(_todoList[index]["title"]),
+        title: Text(_todoList[index]["title"],
+
+          style: new TextStyle(
+            color: _todoList[index]["ok"] ? Colors.black38 : Colors.black ,
+            decoration: _todoList[index]["ok"] ? TextDecoration.lineThrough : TextDecoration.none ,
+          ),
+
+
+
+
+        ),
         value: _todoList[index]["ok"],
         secondary: CircleAvatar(
           child:
